@@ -1,0 +1,47 @@
+create keyspace tomcat
+with placement_strategy = 'org.apache.cassandra.locator.SimpleStrategy'
+and strategy_options = {replication_factor:3};
+
+use tomcat;
+
+drop column family sessions;
+create column family sessions
+    with comparator = UTF8Type
+    and default_validation_class = UTF8Type
+    and column_metadata = [
+    {
+        column_name : ID,
+        validation_class : UTF8Type
+    },
+    {
+        column_name : Created,
+        validation_class : LongType
+    },
+    {
+        column_name : LastAccessed,
+        validation_class : LongType,
+        index_type : 0,
+        index_name : LastAccessedIndex
+    },
+    {
+        column_name : Sentinel,
+        validation_class : LongType,
+        index_type : 0,
+        index_name : SentinelIndex
+    },
+    {
+        column_name : LastEndAccessed,
+        validation_class : LongType
+    },
+    {
+        column_name : LastAccessInterval,
+        validation_class : LongType
+    },
+    {
+        column_name : MaxInactiveInterval,
+        validation_class : LongType
+    }
+    ];
+
+drop column family sessionobjects;
+create column family sessionobjects;

@@ -1,0 +1,69 @@
+<Context docBase="/foo/bar/sample" path="/sample" reloadable="false">
+
+  <!-- Configures the Cassandra session manager for the web application.  -->
+  <!-- @hosts = comma-separated list of Cassandra hosts to connect to.    -->
+  <!-- @cluster = name of Cassandra cluster/ring.                         -->
+  <!-- @keySpace = name of Cassandra key-space ("tomcat").                -->
+  <!-- @username = username for authentication.                           -->
+  <!-- @password = password for authentication.                           -->
+  <!-- @timeout = session timeout in seconds (default is 1800s = 30min).  -->
+  <!-- @purgeInterval = number of seconds to wait between scanning for    -->
+  <!--                  expired sessions (and deleting them) default 60.  -->
+  <!-- @readConsistency = consistency level for read operations.          -->
+  <!--    Allowed values (default is "QUORUM"):                           -->
+  <!--      "ALL" - read from all nodes.                                  -->
+  <!--      "ANY" - read from any single node.                            -->
+  <!--      "ONE" - read from a single node.                              -->
+  <!--      "TWO" - read from two nodes.                                  -->
+  <!--      "THREE" - read from three nodes.                              -->
+  <!--      "QUORUM" - quorum read from local data centre.                -->
+  <!--      "LOCAL_QUORUM" - quorum read from local data centre.          -->
+  <!--      "EACH_QUORUM" - quorum read from all data centres.            -->
+  <!-- @writeConsistency = consistency level for write operations.        -->
+  <!--    Allowed values (default is "QUORUM"):                           -->
+  <!--      "ALL" - write to all nodes.                                   -->
+  <!--      "ANY" - write to any single node.                             -->
+  <!--      "ONE" - write to a single node.                               -->
+  <!--      "TWO" - write to two nodes.                                   -->
+  <!--      "THREE" - write to three nodes.                               -->
+  <!--      "QUORUM" - quorum write to local data centre.                 -->
+  <!--      "LOCAL_QUORUM" - quorum write to local data centre.           -->
+  <!--      "EACH_QUORUM" - quorum write to all data centres.             -->
+  <!-- @compressionLevel = compression level for session objects.         -->
+  <!--    Allowed values (default is "OFF"):                              -->
+  <!--      "BEST"    - for best compression (less I/O, more CPU).        -->
+  <!--      "SPEED"   - for fastest compression (more I/O, less CPU).     -->
+  <!--      "DEFAULT" - for default compression (balanced I/O and CPU).   -->
+  <!--      "NONE"    - for no compression, but allowing decompression of -->
+  <!--                  already compressed objects. Use this setting for  -->
+  <!--                  a short period to safely switch compression off.  -->
+  <!--      "OFF"     - compression and decompression completely off.     -->
+  <Manager className="org.apache.catalina.cassandra.TomcatManager" hosts="heisenberg:9160,bohr:9160,einstein:9160" cluster="TestCluster" keySpace="tomcat" username="morten" password="******" readConsistency="QUORUM" writeConsistency="QUORUM" timeout="1800" purgeInterval="60"/>
+
+  <!-- This valve allows logging of Cassandra IO and performance to Log4J -->
+  <!-- Note that Log4J DEBUG-level logging must be enabled for the class  -->
+  <!-- org.apache.catalina.cassandra.utils.StatisticsLogger for a full    -->
+  <!-- set of statistics.                                                 -->
+  <Valve className="org.apache.catalina.cassandra.utils.StatisticsLogger"/>
+  
+  <!-- This cache implementations writes updated session objects back to  -->
+  <!-- Cassandra after the current request has completed processing. Only -->
+  <!-- session objects that have been written back through calls to       -->
+  <!-- HttpSession.setAttribute(String,Object) are presisted to           -->
+  <!-- Cassandra. Other session objects are not considered changed.       -->
+  <Valve className="org.apache.catalina.cassandra.cache.AggressiveWriteBackCache"/>
+  
+  <!-- This cache implementations writes all read session objects back to -->
+  <!-- Cassandra after the current request has completed processing. All  -->
+  <!-- session objects that have been read from Cassandra through calls   -->
+  <!-- to HttpSession.getAttribute(String) will be persisted to Cassandra -->
+  <!-- assuming the calling code may have changed the contents of the     -->
+  <!-- object.                                                            -->
+  <!-- Valve className="org.apache.catalina.cassandra.cache.WriteBackCache"/ -->
+  
+  <!-- This cache implementation writes changes to session objects back   -->
+  <!-- to Cassandra as soon as the client code has called                 -->
+  <!-- HttpSession.setAttribute(String,Object).                           -->
+  <!-- Valve className="org.apache.catalina.cassandra.cache.WriteThroughCache"/ -->
+
+</Context>
