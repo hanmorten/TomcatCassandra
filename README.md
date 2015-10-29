@@ -14,8 +14,14 @@ Session data exists only in Cassandra, and none of your Tomcat nodes maintain
 session data in memory between serving requests. This has two benefits:
 
  o) Reduces the memory footprint of your application.
- o) Improves scalability as no Tomcat node becomes a memory/session bottleneck. 
- o) The session is persisted as individual attributes, and session attributes are loaded on demand. For applications with large amount of session attributes, each JSP/servlet may not trigger a load of all session attributes, hence memory footprint should be reduced.
+ 
+ o) Improves scalability as no Tomcat node becomes a memory/session bottleneck.
+  
+ o) The session is persisted as individual attributes, and session attributes
+    are loaded on demand. For applications with large amount of session
+    attributes, each JSP/servlet may not trigger a load of all session
+    attributes, hence memory footprint should be reduced.
+
  o) No code changes to Tomcat or your application are required. 
 
 
@@ -123,11 +129,11 @@ be selected to suit the behaviour of your web application.
     your code may update data within these objects without calling
     HttpSession.setAttribute(String,Object).
 
-  o) The aggressive write-back cache works as the normal write-back cache, but
-     it writes back to Cassandra only those session objects that have been
-     set/updated using HttpSession.setAttribute(String,Object). Use this cache
-     when your code consistently calls HttpSession.setAttribute(String,Object)
-     to flag that the a session object has been updated. 
+ o) The aggressive write-back cache works as the normal write-back cache, but
+    it writes back to Cassandra only those session objects that have been
+    set/updated using HttpSession.setAttribute(String,Object). Use this cache
+    when your code consistently calls HttpSession.setAttribute(String,Object)
+    to flag that the a session object has been updated. 
 
 
 Performance Statistics
@@ -139,6 +145,7 @@ statistics output you must:
 
  1) Configure the valve org.apache.catalina.cassandra.utils.StatisticsLogger
     for your web application.
+    
  2) Enable Log4J "DEBUG" log level for the Java class
     org.apache.catalina.cassandra.utils.StatisticsLogger 
 
