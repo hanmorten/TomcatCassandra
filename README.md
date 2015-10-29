@@ -37,7 +37,8 @@ All required resources are found in tomcat-cassandra-*.*.tar
 3. **Configure Session Manager:**
    Tomcat is configured using standard manager configuration in your web
    application descriptor file (such as
-   $CATALINA_HOME/conf/Catalina/localhost/sample.xml):
+   `$CATALINA_HOME/conf/Catalina/localhost/sample.xml`):
+
 
     <Context docBase="/foo/bar/sample" path="/sample" reloadable="false">
 
@@ -114,23 +115,23 @@ Three cache implementations are provided, and the cache implementation should
 be selected to suit the behaviour of your web application.
 
 * The write-through writes changes to session objects back to Cassandra as
-  soon as the client code has called HttpSession.setAttribute(String,Object).
+  soon as the client code has called `HttpSession.setAttribute(String,Object)`.
   This cache is useful if your application serves multiple, concurrent Ajax
   requests for the same user session.
 
 * The write-back cache writes all read session objects back to Cassandra
   after the current request has completed processing. All session objects
   that have been read from Cassandra through calls to
-  HttpSession.getAttribute(String) will be persisted to Cassandra assuming
+  `HttpSession.getAttribute(String)` will be persisted to Cassandra assuming
   the calling code may have changed the contents of the object. This cache
   is useful when your web application maintains larger session objects, and
   your code may update data within these objects without calling
-  HttpSession.setAttribute(String,Object).
+  `HttpSession.setAttribute(String,Object)`.
 
 * The aggressive write-back cache works as the normal write-back cache, but
   it writes back to Cassandra only those session objects that have been
-  set/updated using HttpSession.setAttribute(String,Object). Use this cache
-  when your code consistently calls HttpSession.setAttribute(String,Object)
+  set/updated using `HttpSession.setAttribute(String,Object)`. Use this cache
+  when your code consistently calls `HttpSession.setAttribute(String,Object)`
   to flag that the a session object has been updated. 
 
 
@@ -140,7 +141,7 @@ You can record statistics on the cache success rate, serialisation overhead,
 Cassandra I/O overhead and Cassandra session sizes using Log4J. To generate
 statistics output you must:
 
-1. Configure the valve org.apache.catalina.cassandra.utils.StatisticsLogger
+1. Configure the valve `org.apache.catalina.cassandra.utils.StatisticsLogger`
    for your web application.
     
 2. Enable Log4J "DEBUG" log level for the Java class
@@ -158,10 +159,13 @@ implementation that stores values directly as session attributes is provided.
 To use this Map you need to:
 
 1. Change your session-scope bean from using a standard HashMap to using the
-   org.apache.catalina.cassandra.utils.SessionMap class.
+   `org.apache.catalina.cassandra.utils.SessionMap` class.
 
 2. Configure a Valve that binds requests to a thread-local variable used by
    the SessionMap class (don't worry, the thread-local variable will be
    cleared as soon as the request has been processed):
 
+
       <Valve className="org.apache.catalina.cassandra.utils.RequestHolderValve"/>
+      
+      
