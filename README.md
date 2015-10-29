@@ -39,7 +39,7 @@ All required resources are found in tomcat-cassandra-*.*.tar
    application descriptor file (such as
    `$CATALINA_HOME/conf/Catalina/localhost/sample.xml`):
 
-
+```
     <Context docBase="/foo/bar/sample" path="/sample" reloadable="false">
 
       <!-- Configures the Cassandra session manager for the web application.  -->
@@ -107,7 +107,7 @@ All required resources are found in tomcat-cassandra-*.*.tar
       <!-- Valve className="org.apache.catalina.cassandra.cache.WriteThroughCache"/ -->
 
     </Context>
-
+```
 
 ##Caching
 
@@ -165,7 +165,7 @@ To use this Map you need to:
    the SessionMap class (don't worry, the thread-local variable will be
    cleared as soon as the request has been processed):
 
-
+```
       <Valve className="org.apache.catalina.cassandra.utils.RequestHolderValve"/>
-      
+```   
       
