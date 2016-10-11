@@ -87,6 +87,20 @@ public abstract class Cache {
 	    return this._cassandra;    
     }
 
+    protected CassandraSession getUpdatedCassandraSession() {
+        final HttpSession httpsession = _request.getSession();
+        if (httpsession instanceof TomcatSession) {
+            final TomcatSession session = (TomcatSession)httpsession;
+            this._cassandra = session.getCassandraSession();
+        }
+
+        if (this._cassandra == null) {
+            cat.error("Unable to use cache as Cassandra Session Manager is not installed!");
+        }
+
+        return this._cassandra;
+    }
+
     /**
      * This method tells you if the user has accessed the session within the
      * current request/cache scope.
