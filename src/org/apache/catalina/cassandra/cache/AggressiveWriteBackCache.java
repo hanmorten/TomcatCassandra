@@ -84,7 +84,9 @@ public class AggressiveWriteBackCache extends CacheValve {
             // Write all cached entries to cassandra.
             if (dirty.size() == 0) return;
             
-            final CassandraSession cassandra = this.getCassandraSession();
+            //final CassandraSession cassandra = this.getCassandraSession();
+            final CassandraSession cassandra = this.getUpdatedCassandraSession();
+
             if (cassandra == null) return;
             
             if (this.serialiser == null) {
